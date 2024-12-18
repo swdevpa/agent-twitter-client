@@ -51,6 +51,8 @@ import {
   createQuoteTweetRequest,
   likeTweet,
   retweet,
+  createCreateNoteTweetRequest,
+  createCreateLongTweetRequest,
 } from './tweets';
 import { parseTimelineTweetsV2, TimelineV2 } from './timeline-v2';
 import { fetchHomeTimeline } from './timeline-home';
@@ -466,7 +468,12 @@ export class Scraper {
     replyToTweetId?: string,
     mediaData?: { data: Buffer; mediaType: string }[],
   ) {
-    return await createCreateNoteTweetRequest(text, this.auth, replyToTweetId, mediaData);
+    return await createCreateNoteTweetRequest(
+      text,
+      this.auth,
+      replyToTweetId,
+      mediaData,
+    );
   }
 
   /**
