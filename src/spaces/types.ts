@@ -41,7 +41,7 @@ export interface BroadcastCreated {
   broadcast: {
     user_id: string;
     twitter_id: string;
-    media_key: string; // often needed for stream status
+    media_key: string;
   };
   access_token: string;
   endpoint: string;
@@ -69,11 +69,17 @@ export interface Plugin {
    */
   init?(params: { space: Space; pluginConfig?: Record<string, any> }): void;
 
-  onAudioData(data: AudioDataWithUser): void;
+  onAudioData?(data: AudioDataWithUser): void;
   cleanup?(): void;
 }
 
 export interface PluginRegistration {
   plugin: Plugin;
   config?: Record<string, any>;
+}
+
+export interface SpeakerInfo {
+  userId: string;
+  sessionUUID: string;
+  janusParticipantId?: number;
 }
