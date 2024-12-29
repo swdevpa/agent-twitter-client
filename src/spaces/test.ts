@@ -128,7 +128,7 @@ async function main() {
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
     space.reactWithEmoji(emoji);
   });
-  
+
   space.on('error', (err) => {
     console.error('[Test] Space Error =>', err);
   });
