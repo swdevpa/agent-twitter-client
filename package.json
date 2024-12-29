@@ -35,7 +35,8 @@
     "tough-cookie": "^4.1.2",
     "tslib": "^2.5.2",
     "twitter-api-v2": "^1.18.2",
-    "undici": "^7.1.1"
+    "undici": "^7.1.1",
+    "undici-types": "^7.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
