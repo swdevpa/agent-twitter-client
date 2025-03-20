@@ -120,3 +120,4 @@ yarn.lock
 
 cookies.json
 .DS_Store
+/cookie-backups

@@ -1,0 +1,222 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Ich möchte für meine PhotoEditor App, die es ermöglicht per AI Bilder zu generieren bzw. zu bearbeitene über den Marketing Agent auf Twitter mein Marketing durchführen.
+
+Es gibt bereits ein erstes Konstrukt, verwende für die Implementierung [MarketingAgent.js](mdc:MarketingAgent.js)
+
+Dafür habe ich folgende Strategie:
+
+# AI Photo Editor App - Twitter Marketing Strategy
+
+## Marketing Goals
+- Increase app downloads by 30% within 3 months
+- Build a community of 5,000+ followers
+- Generate user-created content using our AI prompt features
+- Position as industry expert in AI-powered photo editing and generation
+- Drive traffic to website/app store
+- Showcase the creative potential of AI prompt-based image editing
+
+## Target Audience
+- Photography enthusiasts (amateur to semi-pro)
+- Social media content creators
+- Digital artists
+- AI art enthusiasts
+- Tech-savvy individuals aged 18-35
+- Creative professionals
+- Prompt engineering hobbyists
+
+## Content Pillars
+1. **Product Updates** (15% of content)
+   - New features
+   - Bug fixes
+   - Performance improvements
+   - User interface enhancements
+   - New AI models integration
+
+2. **Tutorial Content** (25% of content)
+   - How-to guides for prompt engineering
+   - Feature spotlights
+   - Tips & tricks for better prompts
+   - Advanced prompt techniques
+   - Before/after transformation examples
+
+3. **AI Generation Showcases** (20% of content)
+   - Amazing images created with our app
+   - Creative prompt examples
+   - Prompt challenges and results
+   - Step-by-step prompt refinement
+
+4. **AI Editing Showcases** (20% of content)
+   - Before/after edits using AI prompts
+   - Creative editing transformations
+   - Style transfer examples
+   - Restoration and enhancement showcases
+
+5. **Industry Content** (10% of content)
+   - AI image generation trends
+   - Editing techniques
+   - Inspirational content
+   - Industry news
+
+6. **Community Engagement** (10% of content)
+   - Polls/questions about AI features
+   - Prompt challenges
+   - AI art contests
+   - Responding to trends
+
+## Posting Schedule
+- **Optimal posting times**: 8-10am, 12-1pm, 5-7pm (Local time)
+- **Posting frequency**: 1-2 tweets per day
+- **Content distribution**:
+  - Monday: Product Updates
+  - Tuesday: Tutorials (prompting techniques)
+  - Wednesday: AI Generation Showcases
+  - Thursday: AI Editing Showcases
+  - Friday: Industry Content
+  - Saturday: Community Engagement
+  - Sunday: Mix of high-performing content types
+
+## Hashtag Strategy
+### Primary Hashtags (include in most tweets)
+- #AIPhotoEditor
+- #PromptBasedEditing
+- #AIImageGeneration
+
+### Secondary Hashtags (rotate based on content)
+- #AIArt
+- #PromptEngineering
+- #PhotoEditingAI
+- #AICreativity
+- #TextToImage
+- #ImageTransformation
+- #DigitalArtAI
+
+### Trending Hashtags
+- Research and include 1-2 relevant trending hashtags per week
+
+## Tweet Templates
+
+### Product Updates
+```
+🚀 NEW UPDATE ALERT! 🚀
+We just launched [feature name] in our AI Photo Editor v[version]!
+Now you can [benefit of feature] with just a simple text prompt!
+#AIPhotoEditor #PromptEngineering
+[Image/GIF demonstrating feature]
+```
+
+### Tutorial Content
+```
+📱✨ PROMPT ENGINEERING TIP #[number] ✨📱
+Learn how to [accomplish specific edit] with this prompt formula:
+"[example prompt structure]"
+Pro tip: [specific advice for better results]
+#AIPromptTips #TextToImage
+[Before/After comparison]
+```
+
+### AI Generation Showcases
+```
+✨ CREATED WITH AI ✨
+This stunning image was generated with our app using the prompt:
+"[actual prompt used]"
+What would YOU create with this prompt?
+#AIArt #PromptBasedGeneration
+[Generated image]
+```
+
+### AI Editing Showcases
+```
+🔄 BEFORE → AFTER TRANSFORMATION 🔄
+We turned this [description of original] into [description of result] using the prompt:
+"[actual editing prompt]"
+Try it yourself with our app!
+#AIEditing #ImageTransformation
+[Before/After comparison]
+```
+
+### Industry Content
+```
+🔮 AI ART TREND ALERT 🔮
+[Trend name] is taking over in [year]!
+Here's a prompt to achieve this look with our app:
+"[example prompt]"
+#AIArtTrends #PromptEngineering
+[Trend example image]
+```
+
+### Community Engagement
+```
+✏️ PROMPT CHALLENGE TIME! ✏️
+This week we're challenging you to create [specific type of image] using our app.
+The best prompt formula wins [prize/feature]!
+Share your results with #AIPhotoEditorChallenge
+[Example image as inspiration]
+```
+
+## AI Integration Points
+
+### Content Generation Prompts
+- "Create a tweet about our [specific AI feature] that highlights how it helps photographers transform their work"
+- "Generate a step-by-step tutorial tweet for creating [specific effect] using text prompts"
+- "Write an engaging tweet announcing our new AI model that specializes in [specific capability]"
+
+### Image Description Guidance
+- Describe the prompt used to create/edit the image
+- Mention specific AI models or parameters used
+- Highlight unique aspects visible in the before/after comparison
+- Include prompt engineering tips when relevant
+
+### Response Templates for AI
+- Thank users for feedback: "Thanks for sharing your thoughts on our AI capabilities! We're taking notes for future model updates. #UserFeedback"
+- Address feature requests: "Great suggestion about [AI feature]! We've added it to our development roadmap. #ComingSoon"
+- Handle support inquiries: "Sorry to hear that! For better prompt results, try [quick tip] or visit [support link] for assistance. #Support"
+
+## Performance Tracking
+- Track engagement rates weekly
+- Analyze top-performing prompts monthly
+- Monitor which AI features generate most shares
+- Adjust strategy quarterly based on:
+  - Follower growth
+  - Engagement metrics
+  - Click-through rates
+  - Conversion data
+  - Most popular AI features
+
+## Special Campaigns
+
+### App Milestones
+- Download celebrations (50K, 100K, etc.)
+- "X million images generated" announcements
+- Anniversary content
+- Major version releases with new AI capabilities
+
+### AI Prompt Campaigns
+- Weekly prompt challenges
+- "Prompt of the day" series
+- Style recreation contests
+- Before/after transformation contests
+
+### Seasonal Campaigns
+- Holiday-themed prompt templates
+- Seasonal AI art challenges
+- Themed contests (Halloween transformations, etc.)
+
+### Collaborations
+- AI artist takeovers
+- Prompt engineer partnerships
+- Industry expert features
+- Collaborations with photographers for AI enhancements
+
+## Crisis Management
+- Respond to negative feedback within 3 hours
+- Prepare templates for common AI-related issues
+- Address ethical concerns transparently
+- Escalation protocol for serious concerns
+
+---
+
+*Note: This strategy should be reviewed and updated quarterly to ensure alignment with app development roadmap and AI technology trends.* 
