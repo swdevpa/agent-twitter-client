@@ -86,9 +86,9 @@ class MarketingAgent {
       communityEngagement: ['#AIChallenge', '#ShareYourArt', '#AICommunity', '#CreativePrompts']
     };
     
-    // Wochentags-Planung
+    // Wochentags-Planung aktualisiert: Keine regelmäßigen Produkt-Updates
     this.weekdayPlan = {
-      1: 'productUpdates',        // Montag
+      1: 'industryContent',       // Montag (war: productUpdates)
       2: 'tutorialContent',       // Dienstag
       3: 'aiGenerationShowcases', // Mittwoch
       4: 'aiEditingShowcases',    // Donnerstag
@@ -651,6 +651,112 @@ class MarketingAgent {
   }
   
   /**
+   * Ermittelt die aktuelle Jahreszeit (Frühling, Sommer, Herbst, Winter)
+   * @returns {string} Die aktuelle Jahreszeit
+   */
+  getCurrentSeason() {
+    const month = new Date().getMonth();
+    // 0-11: Januar-Dezember
+    
+    // Nord-Hemisphäre Jahreszeiten
+    if (month >= 2 && month <= 4) return 'spring'; // März-Mai
+    if (month >= 5 && month <= 7) return 'summer'; // Juni-August
+    if (month >= 8 && month <= 10) return 'autumn'; // September-November
+    return 'winter'; // Dezember-Februar
+  }
+
+  /**
+   * Vermeidet wiederholte Tweet-Inhalte durch Tracking des letzten Inhalts
+   * @param {string} contentType - Der Content-Typ
+   * @returns {Object} Eindeutige Inhaltsvorschläge für den Tweet
+   */
+  getUniqueContentSuggestions(contentType) {
+    // Tracke den zuletzt verwendeten Inhalt pro Content-Typ
+    if (!this.lastUsedContent) {
+      this.lastUsedContent = {};
+    }
+    
+    // Basis-Inhalte
+    const suggestions = {
+      tutorialContent: [
+        { goal: 'enhance portrait lighting', promptTip: 'natural studio lighting, soft shadows' },
+        { goal: 'create dramatic landscapes', promptTip: 'epic vista, golden hour lighting' },
+        { goal: 'remove image backgrounds', promptTip: 'isolate subject, transparent background' },
+        { goal: 'transform day to night', promptTip: 'night atmosphere, moonlight, stars' },
+        { goal: 'add cinematic color grading', promptTip: 'film noir filter, high contrast' }
+      ],
+      aiGenerationShowcases: [
+        { prompt: 'futuristic cityscape with neon lights and flying vehicles' },
+        { prompt: 'mystical forest with glowing plants and magical creatures' },
+        { prompt: 'underwater scene with ancient ruins and exotic sea life' },
+        { prompt: 'cosmic space vista with colorful nebulae and distant planets' },
+        { prompt: 'cyberpunk street market with holographic displays' }
+      ],
+      aiEditingShowcases: [
+        { before: 'casual portrait', after: 'professional headshot', prompt: 'professional linkedin portrait, studio lighting' },
+        { before: 'simple product photo', after: 'commercial-ready image', prompt: 'professional product photography, studio lighting' },
+        { before: 'vacation snapshot', after: 'travel magazine cover', prompt: 'professional travel photography, golden hour' },
+        { before: 'pet photo', after: 'pet portrait masterpiece', prompt: 'professional pet portrait, studio background' },
+        { before: 'food picture', after: 'gourmet presentation', prompt: 'food photography, professional styling, soft lighting' }
+      ],
+      industryContent: [
+        { trend: 'AI-enhanced detail restoration', year: new Date().getFullYear() },
+        { trend: 'Text-guided image editing', year: new Date().getFullYear() },
+        { trend: 'One-click background replacement', year: new Date().getFullYear() },
+        { trend: 'Smart portrait enhancement', year: new Date().getFullYear() },
+        { trend: 'Style transfer evolution', year: new Date().getFullYear() }
+      ],
+      communityEngagement: {}
+    };
+    
+    // Saisonale Anpassung für Community-Engagement
+    const season = this.getCurrentSeason();
+    
+    // Community-Engagement nach Jahreszeit
+    suggestions.communityEngagement = {
+      spring: [
+        { challenge: 'spring landscapes', prize: 'spotlight in our social media' },
+        { challenge: 'cherry blossom edits', prize: 'spotlight in our social media' },
+        { challenge: 'spring portrait makeovers', prize: 'spotlight in our social media' }
+      ],
+      summer: [
+        { challenge: 'beach scene transformations', prize: 'spotlight in our social media' },
+        { challenge: 'summer night photography', prize: 'spotlight in our social media' },
+        { challenge: 'vacation photo enhancements', prize: 'spotlight in our social media' }
+      ],
+      autumn: [
+        { challenge: 'autumn color transformations', prize: 'spotlight in our social media' },
+        { challenge: 'Halloween themed edits', prize: 'spotlight in our social media' },
+        { challenge: 'fall portrait photography', prize: 'spotlight in our social media' }
+      ],
+      winter: [
+        { challenge: 'winter wonderland creations', prize: 'spotlight in our social media' },
+        { challenge: 'holiday card designs', prize: 'spotlight in our social media' },
+        { challenge: 'cozy indoor photography', prize: 'spotlight in our social media' }
+      ]
+    }[season];
+    
+    // Wähle einen anderen Inhalt als den zuletzt verwendeten
+    const lastUsed = this.lastUsedContent[contentType];
+    let options = suggestions[contentType] || [];
+    
+    if (options.length === 0) {
+      return {};
+    }
+    
+    // Filtere den letzten Inhalt heraus, wenn mehr als eine Option vorhanden ist
+    if (lastUsed !== undefined && options.length > 1) {
+      options = options.filter((_, index) => index !== lastUsed);
+    }
+    
+    // Wähle einen zufälligen Inhalt aus den verbleibenden Optionen
+    const randomIndex = Math.floor(Math.random() * options.length);
+    this.lastUsedContent[contentType] = randomIndex;
+    
+    return options[randomIndex] || options[0];
+  }
+
+  /**
    * Erstellt einen Tweet mit Grok basierend auf dem Content-Typ
    * @param {string} contentType - Der Typ des zu erstellenden Contents
    * @returns {Promise<string>} Der von Grok generierte Tweet-Text
@@ -681,6 +787,10 @@ class MarketingAgent {
     const currentYear = new Date().getFullYear();
     const currentDay = new Date().getDay();
     const isWeekend = currentDay === 0 || currentDay === 6;
+    const currentSeason = this.getCurrentSeason();
+    
+    // Einzigartige Inhaltsvorschläge basierend auf Content-Typ
+    const uniqueContent = this.getUniqueContentSuggestions(contentType);
     
     // Basis-Prompt für Grok
     let prompt = `Create a strategic marketing tweet for my AI Photo Editor App following our content strategy.
@@ -693,6 +803,8 @@ TWEET STRUCTURE GUIDELINES:
 - End with these hashtags: ${hashtagText}
 - Maintain a professional but enthusiastic tone
 - Focus on benefits for our target audience (photographers, content creators, digital artists)
+- Make sure content is appropriate for current season: ${currentSeason}
+- Do NOT mention any premium subscription, paid tiers, or subscription features
 
 EXAMPLE TEMPLATE for this content type:
 "${exampleTemplate}"`;
@@ -710,49 +822,54 @@ SPECIFICS FOR PRODUCT UPDATES:
         break;
         
       case 'tutorialContent':
+        const tutorialContent = uniqueContent || { goal: 'enhance portrait photos', promptTip: 'soft studio lighting, gentle contrast' };
         prompt += `
 SPECIFICS FOR TUTORIAL CONTENT:
-- Focus on prompt engineering techniques for better photo editing
-- Include a specific prompt formula example that users can try
+- Focus on ${tutorialContent.goal} using prompt engineering techniques
+- Include this specific prompt tip: "${tutorialContent.promptTip}"
 - Add a short tip that feels valuable even in the limited characters
 - Use educational emoji like 📱✨, 🔍, or 💡
 - Position our app as an educational tool for creativity`;
         break;
         
       case 'aiGenerationShowcases':
+        const genContent = uniqueContent || { prompt: 'Enchanted forest waterfall at sunset, magical lighting' };
         prompt += `
 SPECIFICS FOR AI GENERATION SHOWCASES:
 - Emphasize the creative possibilities of our AI generator
-- Include this example prompt: "Enchanted forest waterfall at sunset, magical lighting"
+- Include this example prompt: "${genContent.prompt}"
 - Express amazement at the quality of AI-generated images
 - Encourage users to share their own creations
 - Use creative emoji like ✨, 🎨, or 🌟`;
         break;
         
       case 'aiEditingShowcases':
+        const editContent = uniqueContent || { before: 'simple portrait photo', after: 'stunning portrait', prompt: 'professional portrait, perfect lighting' };
         prompt += `
 SPECIFICS FOR AI EDITING SHOWCASES:
-- Describe an impressive before/after transformation
-- Before: "simple portrait photo"
-- After: "stunning fantasy character portrait"
-- Include the transformation prompt: "transform to fantasy elf, magical glow"
+- Describe this impressive before/after transformation
+- Before: "${editContent.before}"
+- After: "${editContent.after}"
+- Include the transformation prompt: "${editContent.prompt}"
 - Use transformation emoji like 🔄, ✂️, or 📸`;
         break;
         
       case 'industryContent':
+        const industryContent = uniqueContent || { trend: 'Cinematic Hyper-Realism', year: currentYear };
         prompt += `
 SPECIFICS FOR INDUSTRY CONTENT:
-- Mention the trending technique "Cinematic Hyper-Realism" in ${currentYear}
+- Mention the trending technique "${industryContent.trend}" in ${industryContent.year}
 - Position our app at the cutting edge of AI image technology
 - Include an interesting fact or recent development in AI imaging
 - Use tech/trend emoji like 🔮, 📊, or 🌐`;
         break;
         
       case 'communityEngagement':
+        const seasonalChallenge = uniqueContent || { challenge: 'creative photo transformations', prize: 'spotlight in our social media' };
         prompt += `
 SPECIFICS FOR COMMUNITY ENGAGEMENT:
-- Create an autumn-themed creative challenge for our users
-- Mention a possible prize (premium subscription) for participation
+- Create a ${currentSeason}-themed challenge for our users: ${seasonalChallenge.challenge}
+- Mention the prize: ${seasonalChallenge.prize} (NOT a premium subscription)
 - Make it interactive and exciting
 - Encourage sharing and using our specific hashtag #AIPhotoEditorChallenge
 - Use community emoji like ✏️, ❓, or 🏆`;
@@ -772,6 +889,8 @@ CRITICAL REQUIREMENTS:
 - Keep it concise, impactful, and aligned with our brand voice
 - Don't include quotation marks around the tweet
 - The tweet should be ready to post exactly as you write it
+- NEVER mention premium subscriptions or paid features
+- Make sure content is seasonally appropriate for ${currentSeason}
 - RETURN ONLY THE TWEET TEXT, no explanations`;
     
     try {
