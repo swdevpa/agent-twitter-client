@@ -122,3 +122,6 @@ cookies.json
 .DS_Store
 /cookie-backups
 /generated-images
+tweet-log.json
+scheduler-config.json
+tweet-log.json
