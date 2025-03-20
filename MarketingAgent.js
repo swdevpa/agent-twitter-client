@@ -797,6 +797,12 @@ class MarketingAgent {
 The tweet MUST be in ENGLISH and UNDER 250 characters (including hashtags).
 Today's content pillar: ${typeInfo.name}
 
+APP CORE FUNCTIONALITY:
+- Our app generates images entirely through text prompts (no sliders or manual controls)
+- Users can select photos from gallery or take with camera
+- All photo edits are done by entering text prompts (not manual adjustments)
+- The app is prompt-based for both generation and editing
+
 TWEET STRUCTURE GUIDELINES:
 - Start with an engaging emoji
 - Include a clear call-to-action
@@ -805,6 +811,7 @@ TWEET STRUCTURE GUIDELINES:
 - Focus on benefits for our target audience (photographers, content creators, digital artists)
 - Make sure content is appropriate for current season: ${currentSeason}
 - Do NOT mention any premium subscription, paid tiers, or subscription features
+- Emphasize our prompt-based approach (text commands, not sliders)
 
 EXAMPLE TEMPLATE for this content type:
 "${exampleTemplate}"`;
@@ -815,9 +822,10 @@ EXAMPLE TEMPLATE for this content type:
         prompt += `
 SPECIFICS FOR PRODUCT UPDATES:
 - Feature to highlight: "Advanced Lighting Effects" in version 2.5.0
-- Key benefit: Create professional studio-quality lighting in any photo using AI
+- Key benefit: Create professional studio-quality lighting in any photo using text prompts
 - Convey excitement about the new capability
-- Encourage users to update/download the app
+- Emphasize how simple it is to transform photos with just a text prompt
+- Highlight that NO manual adjustments are needed - just type what you want
 - Use product-focused emoji like 🚀, ✨, or 📱`;
         break;
         
@@ -827,17 +835,19 @@ SPECIFICS FOR PRODUCT UPDATES:
 SPECIFICS FOR TUTORIAL CONTENT:
 - Focus on ${tutorialContent.goal} using prompt engineering techniques
 - Include this specific prompt tip: "${tutorialContent.promptTip}"
+- Emphasize that users achieve this effect by typing the prompt - not with manual controls
 - Add a short tip that feels valuable even in the limited characters
 - Use educational emoji like 📱✨, 🔍, or 💡
-- Position our app as an educational tool for creativity`;
+- Position our app as the simplest way to edit photos through natural language`;
         break;
         
       case 'aiGenerationShowcases':
         const genContent = uniqueContent || { prompt: 'Enchanted forest waterfall at sunset, magical lighting' };
         prompt += `
 SPECIFICS FOR AI GENERATION SHOWCASES:
-- Emphasize the creative possibilities of our AI generator
+- Emphasize that our app can generate images from scratch with just a text prompt
 - Include this example prompt: "${genContent.prompt}"
+- Highlight how simple the generation process is - just type what you want to see
 - Express amazement at the quality of AI-generated images
 - Encourage users to share their own creations
 - Use creative emoji like ✨, 🎨, or 🌟`;
@@ -851,16 +861,20 @@ SPECIFICS FOR AI EDITING SHOWCASES:
 - Before: "${editContent.before}"
 - After: "${editContent.after}"
 - Include the transformation prompt: "${editContent.prompt}"
+- Emphasize that the transformation was achieved by typing the prompt - not manual editing
+- Mention that users can import photos from gallery or camera and transform them instantly
 - Use transformation emoji like 🔄, ✂️, or 📸`;
         break;
         
       case 'industryContent':
-        const industryContent = uniqueContent || { trend: 'Cinematic Hyper-Realism', year: currentYear };
+        const industryContent = uniqueContent || { trend: 'AI-enhanced detail restoration', year: currentYear };
         prompt += `
 SPECIFICS FOR INDUSTRY CONTENT:
 - Mention the trending technique "${industryContent.trend}" in ${industryContent.year}
-- Position our app at the cutting edge of AI image technology
+- Position our app as the easiest way to achieve this effect through prompt engineering
+- Highlight how our prompt-based approach is more intuitive than traditional editing tools
 - Include an interesting fact or recent development in AI imaging
+- Emphasize that complex edits can be done with simple text commands
 - Use tech/trend emoji like 🔮, 📊, or 🌐`;
         break;
         
@@ -869,8 +883,9 @@ SPECIFICS FOR INDUSTRY CONTENT:
         prompt += `
 SPECIFICS FOR COMMUNITY ENGAGEMENT:
 - Create a ${currentSeason}-themed challenge for our users: ${seasonalChallenge.challenge}
+- Encourage users to share prompts they used for their creations
 - Mention the prize: ${seasonalChallenge.prize} (NOT a premium subscription)
-- Make it interactive and exciting
+- Emphasize the simplicity of creating art with text prompts in our app
 - Encourage sharing and using our specific hashtag #AIPhotoEditorChallenge
 - Use community emoji like ✏️, ❓, or 🏆`;
         break;
@@ -891,6 +906,7 @@ CRITICAL REQUIREMENTS:
 - The tweet should be ready to post exactly as you write it
 - NEVER mention premium subscriptions or paid features
 - Make sure content is seasonally appropriate for ${currentSeason}
+- ALWAYS emphasize our prompt-based approach (text commands, not manual controls)
 - RETURN ONLY THE TWEET TEXT, no explanations`;
     
     try {
