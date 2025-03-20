@@ -14,7 +14,8 @@ const COMMANDS = {
   TRENDS: 'trends',
   ANALYZE: 'analyze',
   HELP: 'help',
-  GENERATE_IMAGE: 'generate-image'
+  GENERATE_IMAGE: 'generate-image',
+  TEST: 'test'
 };
 
 // Content-Typen
@@ -52,6 +53,10 @@ Verfügbare Befehle:
   generate-image [prompt] - Generiert ein Testbild mit Gemini AI
                           prompt ist der zu verwendende Prompt (Standard: "AI photo editor interface")
   
+  test [publish]        - Führt den Testmodus aus: Generiert 2 Beispiel-Tweets für jeden Content-Typ
+                          publish kann sein: "true" oder "false" (Standard: "true")
+                          Bei "true" werden alle generierten Tweets veröffentlicht
+  
   help                  - Zeigt diese Hilfe an
 
 Beispiele:
@@ -59,6 +64,8 @@ Beispiele:
   node marketingCLI.js trends 10       # Zeigt die Top 10 Trends
   node marketingCLI.js analyze 20      # Analysiert die letzten 20 Tweets
   node marketingCLI.js generate-image "Magical forest with sunlight" # Generiert ein Testbild
+  node marketingCLI.js test            # Führt den Testmodus aus und veröffentlicht alle Tweets
+  node marketingCLI.js test false      # Führt den Testmodus aus ohne Tweets zu veröffentlichen
 `);
 }
 
@@ -185,6 +192,37 @@ async function processArgs(args) {
         for (const [type, data] of Object.entries(analysis.engagementByType)) {
           console.log(`- ${type}: ${data.count} Tweets, Durchschnitt: ${data.avgEngagement.toFixed(2)} Engagements`);
         }
+        break;
+      }
+      
+      case COMMANDS.TEST: {
+        console.log('Starte Testmodus...');
+        
+        // Prüfe, ob Tweets veröffentlicht werden sollen (Standard: true)
+        const publishTweets = option !== 'false';
+        console.log(`Die generierten Tweets werden ${publishTweets ? 'veröffentlicht' : 'nicht veröffentlicht'}.`);
+        
+        const results = await agent.runTestMode(publishTweets);
+        
+        // Zeige eine Zusammenfassung der Ergebnisse an
+        console.log('\n=== Zusammenfassung Testmodus ===');
+        for (const [contentType, data] of Object.entries(results)) {
+          console.log(`\n${data.contentTypeName}:`);
+          data.tweets.forEach((tweet, index) => {
+            console.log(`  Beispiel ${index + 1}:`);
+            console.log(`  - Tweet: ${tweet.text.substring(0, 50)}...`);
+            console.log(`  - Bild: ${tweet.imagePath}`);
+            console.log(`  - Status: ${tweet.published ? 'Veröffentlicht' : 'Nur generiert'}`);
+          });
+        }
+        
+        console.log('\nTestmodus erfolgreich abgeschlossen!');
+        if (publishTweets) {
+          console.log('Alle generierten Tweets wurden veröffentlicht!');
+        } else {
+          console.log('Die Tweets wurden nur generiert, aber nicht veröffentlicht.');
+        }
+        console.log('Die generierten Bilder findest du im Verzeichnis "generated-images".');
         break;
       }
       

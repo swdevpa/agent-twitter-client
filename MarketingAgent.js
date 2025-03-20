@@ -1269,6 +1269,86 @@ CRITICAL REQUIREMENTS:
       };
     }
   }
+
+  /**
+   * Testmodus: Erstellt zwei Beispiel-Tweets für jeden Content-Typ und sendet sie
+   * @param {boolean} publishTweets - Ob die Tweets auch veröffentlicht werden sollen (Standard: true)
+   * @returns {Promise<Object>} Die generierten Tweets nach Content-Typ
+   */
+  async runTestMode(publishTweets = true) {
+    try {
+      console.log(`Starte Testmodus: Generiere Beispiel-Tweets für alle Content-Typen...${publishTweets ? ' und veröffentliche sie' : ''}`);
+      
+      // Alle Content-Pillars (außer "mixed", das nur für Sonntage ist)
+      const contentTypes = Object.keys(this.contentPillars);
+      
+      // Ergebnis-Objekt vorbereiten
+      const results = {};
+      
+      // Für jeden Content-Typ zwei Tweets erstellen
+      for (const contentType of contentTypes) {
+        console.log(`\n=== Content-Typ: ${this.contentPillars[contentType].name} ===`);
+        results[contentType] = {
+          contentTypeName: this.contentPillars[contentType].name,
+          tweets: []
+        };
+        
+        // Erstelle zwei Tweets pro Typ
+        for (let i = 1; i <= 2; i++) {
+          console.log(`\nBeispiel ${i}:`);
+          
+          // Tweet-Text erstellen
+          const tweetText = await this.createTweetByType(contentType);
+          console.log(`Tweet-Text:\n${tweetText}`);
+          
+          // Inhalte aus dem Tweet extrahieren
+          const tweetContent = this.extractContentFromTweet(contentType, tweetText);
+          
+          // Bild generieren
+          console.log('Generiere passendes Beispielbild...');
+          const imageData = await this.imageGenerator.generateImageForTweet(contentType, tweetContent);
+          console.log(`Bild generiert: ${imageData.filepath}`);
+          
+          // Sende den Tweet, wenn publishTweets true ist
+          let tweetResult = null;
+          if (publishTweets) {
+            console.log('Veröffentliche Tweet...');
+            try {
+              // Bereite die Optionen für den Tweet vor
+              const options = {
+                mediaData: [
+                  {
+                    data: imageData.buffer,
+                    mediaType: imageData.mediaType,
+                  },
+                ],
+              };
+              
+              // Sende den Tweet
+              tweetResult = await this.sendTweet(tweetText, options);
+              console.log('Tweet erfolgreich veröffentlicht!');
+            } catch (error) {
+              console.error(`Fehler beim Veröffentlichen des Tweets: ${error.message}`);
+            }
+          }
+          
+          // Speichere das Ergebnis
+          results[contentType].tweets.push({
+            text: tweetText,
+            imagePath: imageData.filepath,
+            content: tweetContent,
+            published: !!tweetResult,
+            tweetResult
+          });
+        }
+      }
+      
+      return results;
+    } catch (error) {
+      console.error('Fehler im Testmodus:', error);
+      throw error;
+    }
+  }
 }
 
 // Beispiel für die Verwendung
