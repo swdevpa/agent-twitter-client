@@ -217,33 +217,191 @@ class ImageGenerator {
    * @returns {Promise<Object>} Pfad zur Bilddatei und Buffer-Daten
    */
   async generateImageForTweet(contentType, tweetContent) {
+    console.log(`Generiere Bild für Tweet-Typ: ${contentType}`);
+    
     let prompt = '';
+    let demonstrationPrompt = '';
+    
+    // Verwende den Rohtext des Tweets, falls vorhanden, um besseren Kontext zu haben
+    const rawTweet = tweetContent.rawTweet || '';
+    
+    // Prüfe, ob ein zu demonstrierender Prompt im Tweet vorhanden ist
+    let tweetPrompt = tweetContent.prompt || '';
+    const hasPromptToDemo = tweetPrompt && tweetPrompt.length > 5; // Sicherstellen, dass der Prompt nicht zu kurz ist
+    
+    // Prüfe, ob der Prompt Platzhalter enthält und ersetze sie bei Bedarf
+    if (hasPromptToDemo && (tweetPrompt.includes('[') || tweetPrompt.includes(']'))) {
+      console.log('Prompt enthält Platzhalter, erstelle konkrete Beispiele...');
+      
+      // Falls der Prompt eine Formel mit Platzhaltern enthält, ersetze sie
+      const placeholderMap = {
+        '[subject]': 'mountain landscape',
+        '[object]': 'vintage camera',
+        '[person]': 'professional photographer',
+        '[setting]': 'sunset beach',
+        '[style]': 'cinematic',
+        '[color]': 'golden hour',
+        '[time]': 'sunset',
+        '[weather]': 'misty morning',
+        '[lighting]': 'dramatic lighting',
+        '[mood]': 'serene',
+        '[texture]': 'smooth',
+        '[effect]': 'bokeh effect',
+        '[adjective]': 'vibrant',
+        '[emotion]': 'peaceful'
+      };
+      
+      // Ersetze alle Platzhalter durch konkrete Beispiele
+      let concretePrompt = tweetPrompt;
+      for (const [placeholder, replacement] of Object.entries(placeholderMap)) {
+        concretePrompt = concretePrompt.replace(new RegExp(placeholder, 'gi'), replacement);
+      }
+      
+      // Prüfe, ob alle Platzhalter ersetzt wurden
+      if (concretePrompt.includes('[') && concretePrompt.includes(']')) {
+        // Es gibt immer noch unbekannte Platzhalter, ersetze sie generisch
+        concretePrompt = concretePrompt.replace(/\[\w+\]/g, 'beautiful scene');
+      }
+      
+      console.log(`Formel "${tweetPrompt}" in konkretes Beispiel umgewandelt: "${concretePrompt}"`);
+      
+      // Speichere sowohl die Original-Formel als auch das konkrete Beispiel
+      const originalPrompt = tweetPrompt;
+      tweetPrompt = concretePrompt;
+      
+      // Erstelle einen speziellen Prompt für Prompt-Formeln
+      if (contentType === 'tutorialContent') {
+        demonstrationPrompt = `Create a professional tutorial image demonstrating how to use prompt formulas in photo editing.
+                           Show a visual explanation of the formula: "${originalPrompt}"
+                           Include a split-screen comparison with:
+                           - Left side: A basic photo labeled "BEFORE"
+                           - Right side: The same photo edited using the formula, becoming a "${concretePrompt}" (labeled "AFTER")
+                           Add text explaining how placeholders work - for example: [subject] = mountain landscape
+                           Make it educational with a clean, tutorial-style design and numbered steps.`;
+      }
+    }
     
     // Erstelle einen passenden Prompt je nach Content-Typ
     switch (contentType) {
-      case 'productUpdates':
-        prompt = `Generate an image of a professional photo editing app interface showing the "${tweetContent.feature}" feature. Make it modern and clean with a focus on the user interface.`;
+      case 'productUpdates': {
+        const feature = tweetContent.feature || 'Advanced Lighting Effects';
+        const benefit = tweetContent.benefit || 'transform photos with professional lighting';
+        const version = tweetContent.version || '2.5.0';
+        
+        prompt = `Generate a clean, professional image showing a mobile app interface highlighting the "${feature}" feature in AI Photo Editor version ${version}. 
+                 Show the feature in action with a clear before-after demonstration of how it ${benefit}.
+                 Use modern UI design, with a focus on the result. Include subtle app controls and interface elements.`;
         break;
-      case 'tutorialContent':
-        prompt = `Generate a tutorial image showing how to ${tweetContent.accomplish} in photo editing. Create a before and after comparison with arrows or steps indicated.`;
+      }
+        
+      case 'tutorialContent': {
+        const technique = tweetContent.technique || 'prompt engineering';
+        const promptExample = tweetContent.prompt || '';
+        const formula = tweetContent.formula || '';
+        
+        if (hasPromptToDemo) {
+          // Wenn ein konkreter Prompt im Tweet vorhanden ist, erstelle ein Bild, das diesen Prompt demonstriert
+          
+          // Wenn wir bereits einen speziellen Prompt für Formeln haben, verwende diesen
+          if (demonstrationPrompt) {
+            prompt = demonstrationPrompt;
+          } else {
+            // Ansonsten erstelle einen Standard-Demo-Prompt
+            prompt = `Create a visual demonstration of what happens when using the photo editing prompt "${tweetPrompt}".
+                              Show a clear before/after split-screen image:
+                              - On the left: A standard photo labeled "BEFORE"
+                              - On the right: The same photo with "${tweetPrompt}" applied, labeled "AFTER"
+                              Make the effect of the prompt very visible and impressive.
+                              Include a text overlay showing the prompt: "${tweetPrompt}"
+                              Style it as a professional tutorial image with clean design.`;
+          }
+        } else {
+          // Standard-Tutorial-Bild, wenn kein spezifischer Prompt zu demonstrieren ist
+          prompt = `Create an educational, step-by-step tutorial image showing how to master ${technique} in photo editing. 
+                   ${promptExample ? `Include an example of using the prompt: "${promptExample}"` : ''}
+                   ${formula ? `Visualize the formula: ${formula}` : ''}
+                   Show before and after results with clear markings of the steps involved.
+                   Make it look like a professional tutorial with numbered steps and annotations.`;
+        }
         break;
-      case 'aiGenerationShowcases':
+      }
+        
+      case 'aiGenerationShowcases': {
         // Verwende direkt den Prompt aus dem Tweet
-        prompt = `Generate a beautiful image based on this prompt: ${tweetContent.prompt || 'magical scenery with fantasy elements and vibrant colors'}`;
+        const imagePrompt = tweetContent.prompt || 'Enchanted forest waterfall at sunset, magical lighting';
+        const imageType = tweetContent.imageType || 'AI artwork';
+        
+        if (hasPromptToDemo) {
+          // Wenn ein spezifischer Prompt im Tweet erwähnt wird, verwende diesen direkt
+          prompt = `Generate a stunning ${imageType} directly using this prompt: "${tweetPrompt}".
+                  Create the exact image that would result from this prompt.
+                  Focus on making a high-quality, impressive result that showcases what our AI can create.
+                  Do not include any text annotations or labels in the image itself.`;
+        } else {
+          prompt = `Generate a stunning, detailed ${imageType} based exactly on this description: "${imagePrompt}".
+                   Create an artistic, professional result that showcases the power of AI image generation.
+                   Make the image vibrant and eye-catching, suitable for a social media showcase.`;
+        }
         break;
-      case 'aiEditingShowcases':
-        prompt = `Generate a before-and-after comparison showing ${tweetContent.before} transformed into ${tweetContent.after} through AI photo editing.`;
+      }
+        
+      case 'aiEditingShowcases': {
+        const before = tweetContent.before || 'ordinary portrait';
+        const after = tweetContent.after || 'fantasy character';
+        const editPrompt = tweetContent.prompt || 'transform to fantasy style';
+        
+        if (hasPromptToDemo) {
+          // Bei vorhandenem Prompt, zeige die tatsächliche Transformation mit diesem Prompt
+          prompt = `Create a professional before-and-after comparison showing the transformation using the exact prompt: "${tweetPrompt}".
+                   On the left side: Show a ${before} image labeled "BEFORE"
+                   On the right side: Show the same image transformed into a ${after} using the prompt, labeled "AFTER"
+                   Make the transformation dramatic and impressive to showcase the exact effects of the prompt.
+                   Include the prompt text "${tweetPrompt}" subtly at the bottom of the image.`;
+        } else {
+          prompt = `Create a professional before-and-after comparison showing the transformation of a ${before} into a ${after}.
+                   The transformation should match this editing prompt: "${editPrompt}".
+                   Split the image with a clear divider, showing "BEFORE" on the left and "AFTER" on the right.
+                   Make the transformation dramatic and impressive to showcase the power of AI editing.`;
+        }
         break;
-      case 'industryContent':
-        prompt = `Create a visual representation of the ${tweetContent.trend} trend in AI photo editing for ${tweetContent.year}. Make it look like an industry infographic or showcase.`;
+      }
+        
+      case 'industryContent': {
+        const trend = tweetContent.trend || 'Cinematic Hyper-Realism';
+        const year = tweetContent.year || new Date().getFullYear().toString();
+        const fact = tweetContent.fact || null;
+        
+        prompt = `Create a professional, infographic-style image visualizing the "${trend}" trend in AI photo editing for ${year}.
+                 ${fact ? `Include this fact: "${fact}"` : ''}
+                 Use a modern, tech-inspired design with data points or visual elements that highlight the trend.
+                 Make it look like a professional industry report or analysis visualization.`;
         break;
-      case 'communityEngagement':
-        prompt = `Generate an engaging image for a community challenge to create ${tweetContent.challenge} with AI photo editing. Make it eye-catching and inspiring.`;
+      }
+        
+      case 'communityEngagement': {
+        const challenge = tweetContent.challenge || 'creative AI-edited photos';
+        const prize = tweetContent.prize || 'premium subscription';
+        
+        prompt = `Create an engaging, colorful announcement image for a community challenge to create ${challenge}.
+                 Include visual elements suggesting creativity, community, and participation.
+                 ${prize ? `Subtly indicate a prize: ${prize}` : ''}
+                 Make it exciting and motivational to encourage participation in the challenge.
+                 Use bright colors and dynamic composition that would catch attention on social media.`;
         break;
-      default:
-        prompt = 'Generate an image of a modern AI photo editor interface with beautiful results on the screen.';
+      }
+        
+      default: {
+        // Fallback-Prompt: Verwende den Tweet-Text direkt, wenn verfügbar
+        const mainText = tweetContent.mainText || '';
+        
+        prompt = `Generate a professional marketing image for an AI Photo Editor app. 
+                 ${mainText ? `The image should relate to: "${mainText.substring(0, 100)}"` : ''}
+                 Show impressive photo editing capabilities with beautiful results.
+                 Use modern design elements and make it suitable for social media marketing.`;
+      }
     }
     
+    console.log('Generierter Bild-Prompt:', prompt);
     return await this.generateImage(prompt);
   }
 }

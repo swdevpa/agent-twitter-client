@@ -591,16 +591,30 @@ class MarketingAgent {
    */
   async createTweetByType(contentType) {
     // Versuche zuerst, den Tweet mit Grok zu erstellen, wenn verfügbar
-    if (await this.isGrokAvailable()) {
-      try {
+    try {
+      // Prüfen, ob Grok verfügbar ist
+      const grokAvailable = await this.isGrokAvailable();
+      
+      if (grokAvailable) {
+        console.log(`Generiere strategischen ${this.contentPillars[contentType].name}-Tweet mit Grok...`);
         const grokTweet = await this.createTweetWithGrok(contentType);
-        if (grokTweet) {
+        
+        if (grokTweet && grokTweet.trim().length > 0) {
+          console.log('Grok hat erfolgreich einen Tweet generiert');
           return grokTweet;
+        } else {
+          console.warn('Grok hat einen leeren Tweet zurückgegeben, verwende Standard-Methode');
         }
-      } catch (grokError) {
-        console.warn('Konnte Tweet nicht mit Grok erstellen, verwende Standard-Methode:', grokError.message);
+      } else {
+        console.log('Grok ist nicht verfügbar, verwende Standard-Tweet-Methode');
       }
+    } catch (grokError) {
+      console.warn('Fehler bei der Grok-Tweet-Generierung:', grokError.message);
+      console.log('Verwende Standard-Tweet-Methode als Fallback');
     }
+    
+    // Fallback zur Standard-Methode, wenn Grok nicht verfügbar oder fehlschlägt
+    console.log(`Verwende Standard-Methode für Content-Typ: ${contentType}`);
     
     // Fallback zur Standard-Methode
     switch(contentType) {
@@ -648,65 +662,117 @@ class MarketingAgent {
       throw new Error(`Unbekannter Content-Typ für Grok: ${contentType}`);
     }
     
-    // Beispiel-Hashtags für den Content-Typ
-    const hashtags = this.createHashtags(contentType, 3);
+    // Template für diesen Content-Typ als Beispiel auswählen
+    const templateExamples = this.tweetTemplates[contentType] || [];
+    const exampleTemplate = templateExamples.length > 0 ? 
+      templateExamples[Math.floor(Math.random() * templateExamples.length)] : '';
     
-    // Hashtag-Text erstellen
-    const hashtagText = hashtags.join(' ');
+    // Primäre und sekundäre Hashtags kombinieren
+    const primaryTags = [...this.primaryHashtags];
+    const secondaryTags = this.secondaryHashtags[contentType] || [];
+    this.shuffleArray(secondaryTags);
     
-    // Prompt für Grok basierend auf dem Content-Typ - JETZT AUF ENGLISCH
-    let prompt = `Create a creative, engaging tweet in ENGLISH for my AI Photo Editor App.
-It must be MAXIMUM 250 characters long (important!).
-Category: ${typeInfo.name}
-Hashtags to use at the end: ${hashtagText}
+    // 1-2 primäre und 2-3 sekundäre Hashtags auswählen
+    const selectedPrimaryTags = primaryTags.slice(0, Math.min(2, primaryTags.length));
+    const selectedSecondaryTags = secondaryTags.slice(0, Math.min(3, secondaryTags.length));
+    const hashtagText = [...selectedPrimaryTags, ...selectedSecondaryTags].join(' ');
+    
+    // Aktuelles Datum für zeitlich relevante Inhalte
+    const currentYear = new Date().getFullYear();
+    const currentDay = new Date().getDay();
+    const isWeekend = currentDay === 0 || currentDay === 6;
+    
+    // Basis-Prompt für Grok
+    let prompt = `Create a strategic marketing tweet for my AI Photo Editor App following our content strategy.
+The tweet MUST be in ENGLISH and UNDER 250 characters (including hashtags).
+Today's content pillar: ${typeInfo.name}
 
-Consider the following details based on category:`;
+TWEET STRUCTURE GUIDELINES:
+- Start with an engaging emoji
+- Include a clear call-to-action
+- End with these hashtags: ${hashtagText}
+- Maintain a professional but enthusiastic tone
+- Focus on benefits for our target audience (photographers, content creators, digital artists)
+
+EXAMPLE TEMPLATE for this content type:
+"${exampleTemplate}"`;
     
-    // Zusätzliche spezifische Anweisungen basierend auf dem Content-Typ
+    // Spezifische Anweisungen basierend auf dem Content-Typ
     switch(contentType) {
       case 'productUpdates':
         prompt += `
-- Feature: "Advanced Lighting Effects"
-- Version: "2.5.0"
-- Main benefit: Professional studio-quality lighting in any photo`;
+SPECIFICS FOR PRODUCT UPDATES:
+- Feature to highlight: "Advanced Lighting Effects" in version 2.5.0
+- Key benefit: Create professional studio-quality lighting in any photo using AI
+- Convey excitement about the new capability
+- Encourage users to update/download the app
+- Use product-focused emoji like 🚀, ✨, or 📱`;
         break;
+        
       case 'tutorialContent':
         prompt += `
-- Focus on prompt technique tips
-- Provide concrete examples of prompt formulas
-- Mention "prompt engineering"`;
+SPECIFICS FOR TUTORIAL CONTENT:
+- Focus on prompt engineering techniques for better photo editing
+- Include a specific prompt formula example that users can try
+- Add a short tip that feels valuable even in the limited characters
+- Use educational emoji like 📱✨, 🔍, or 💡
+- Position our app as an educational tool for creativity`;
         break;
+        
       case 'aiGenerationShowcases':
         prompt += `
-- Emphasize the power of our AI image generation
-- Use an example prompt: "Enchanted forest waterfall at sunset, magical lighting"
-- Encourage users to share their own creations`;
+SPECIFICS FOR AI GENERATION SHOWCASES:
+- Emphasize the creative possibilities of our AI generator
+- Include this example prompt: "Enchanted forest waterfall at sunset, magical lighting"
+- Express amazement at the quality of AI-generated images
+- Encourage users to share their own creations
+- Use creative emoji like ✨, 🎨, or 🌟`;
         break;
+        
       case 'aiEditingShowcases':
         prompt += `
-- Describe a before-after transformation
+SPECIFICS FOR AI EDITING SHOWCASES:
+- Describe an impressive before/after transformation
 - Before: "simple portrait photo"
 - After: "stunning fantasy character portrait"
-- Prompt: "transform to fantasy elf, magical glow"`;
+- Include the transformation prompt: "transform to fantasy elf, magical glow"
+- Use transformation emoji like 🔄, ✂️, or 📸`;
         break;
+        
       case 'industryContent':
         prompt += `
-- Mention the trend "Cinematic Hyper-Realism"
-- Use current year
-- Emphasize innovation and quality`;
+SPECIFICS FOR INDUSTRY CONTENT:
+- Mention the trending technique "Cinematic Hyper-Realism" in ${currentYear}
+- Position our app at the cutting edge of AI image technology
+- Include an interesting fact or recent development in AI imaging
+- Use tech/trend emoji like 🔮, 📊, or 🌐`;
         break;
+        
       case 'communityEngagement':
         prompt += `
-- Challenge: "autumn-themed fantasy landscape"
-- Encourage participation
-- Mention a possible prize`;
+SPECIFICS FOR COMMUNITY ENGAGEMENT:
+- Create an autumn-themed creative challenge for our users
+- Mention a possible prize (premium subscription) for participation
+- Make it interactive and exciting
+- Encourage sharing and using our specific hashtag #AIPhotoEditorChallenge
+- Use community emoji like ✏️, ❓, or 🏆`;
         break;
+    }
+    
+    // Zeitspezifische Anpassungen
+    if (isWeekend) {
+      prompt += `
+NOTE: Today is a weekend, so the tone can be slightly more casual and focus on creative weekend projects.`;
     }
     
     prompt += `
 
-The tweet MUST be under 250 characters. Avoid filler words. Be creative, concise and precise. 
-IMPORTANT: The tweet must be in ENGLISH only.`;
+CRITICAL REQUIREMENTS:
+- The final tweet MUST be under 250 characters INCLUDING hashtags
+- Keep it concise, impactful, and aligned with our brand voice
+- Don't include quotation marks around the tweet
+- The tweet should be ready to post exactly as you write it
+- RETURN ONLY THE TWEET TEXT, no explanations`;
     
     try {
       // Rufe Grok mit dem Prompt auf
@@ -728,7 +794,7 @@ IMPORTANT: The tweet must be in ENGLISH only.`;
         tweetText = tweetText.substring(0, 277) + '...';
       }
       
-      console.log(`Grok hat einen Tweet mit ${tweetText.length} Zeichen generiert`);
+      console.log(`Grok hat einen strategischen ${typeInfo.name}-Tweet mit ${tweetText.length} Zeichen generiert`);
       return tweetText;
     } catch (error) {
       console.error('Fehler bei der Tweet-Generierung mit Grok:', error);
@@ -956,79 +1022,144 @@ IMPORTANT: The tweet must be in ENGLISH only.`;
    * @returns {Object} Extrahierte Inhalte für die Bildgenerierung
    */
   extractContentFromTweet(contentType, tweetText) {
-    // Grundlegende Extraktion basierend auf dem Content-Typ
-    let content = {};
+    console.log(`Extrahiere Content aus Tweet (${contentType}): ${tweetText.substring(0, 100)}...`);
     
+    // Entferne Emojis und Hashtags für eine bessere Analyse
+    const cleanText = tweetText.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}]/gu, '')
+                              .replace(/#\w+/g, '')
+                              .trim();
+    
+    // Grundlegende Extraktion basierend auf dem Content-Typ
+    let content = {
+      rawTweet: tweetText,
+      mainText: cleanText,
+      contentType: contentType
+    };
+    
+    // Spezifische Extraktion basierend auf Content-Typ
     switch(contentType) {
-      case 'productUpdates':
-        // Extrahiere Feature und Benefit aus dem Tweet
-        const featureMatch = tweetText.match(/launched\s(.+?)\sin/i) || 
-                             tweetText.match(/brings\s(.+?)\sto/i);
-        const benefitMatch = tweetText.match(/can\s(.+?)\swith/i);
+      case 'productUpdates': {
+        // Suche nach Feature-Namen
+        const featureMatch = cleanText.match(/(?:launched|introduces|brings|new|update)\s+"?([^",.!]+)"?/i) || 
+                             cleanText.match(/new\s+feature:?\s+([^,.!]+)/i) ||
+                             cleanText.match(/introducing\s+([^,.!]+)/i);
+        
+        // Suche nach Nutzen/Vorteil
+        const benefitMatch = cleanText.match(/(?:can|helps|allows)\s+(?:you\s+)?(?:to\s+)?([^,.!]+)/i) ||
+                             cleanText.match(/benefit:?\s+([^,.!]+)/i);
+        
+        // Suche nach Version
+        const versionMatch = cleanText.match(/v(\d+\.\d+(?:\.\d+)?)/i) ||
+                             cleanText.match(/version\s+(\d+\.\d+(?:\.\d+)?)/i);
         
         content = {
-          feature: featureMatch ? featureMatch[1] : 'Advanced Photo Editing Feature',
-          benefit: benefitMatch ? benefitMatch[1] : 'enhance photos with AI'
+          ...content,
+          feature: featureMatch ? featureMatch[1].trim() : 'Advanced Lighting Effects',
+          benefit: benefitMatch ? benefitMatch[1].trim() : 'transform your photos with AI',
+          version: versionMatch ? versionMatch[1] : '2.5.0'
         };
         break;
+      }
+      
+      case 'tutorialContent': {
+        // Suche nach der Technik/Tipp
+        const tipMatch = cleanText.match(/tip:?\s+([^,.!]+)/i) ||
+                         cleanText.match(/how\s+to\s+([^,.!]+)/i) ||
+                         cleanText.match(/learn\s+to\s+([^,.!]+)/i) ||
+                         cleanText.match(/master\s+([^,.!]+)/i);
         
-      case 'tutorialContent':
-        // Extrahiere Tutorial-Details
-        const accomplishMatch = tweetText.match(/how to\s(.+?)\swith/i);
-        const promptMatch = tweetText.match(/"(.+?)"/);
+        // Suche nach einem Prompt-Beispiel
+        const promptMatch = cleanText.match(/"([^"]+)"/);
+        
+        // Suche nach speziellen Anweisungen oder Formeln
+        const formulaMatch = cleanText.match(/formula:?\s+([^,.!]+)/i) ||
+                             cleanText.match(/try\s+(?:adding|using)?\s+(?:this:?\s+)?([^,.!]+)/i);
         
         content = {
-          accomplish: accomplishMatch ? accomplishMatch[1] : 'edit photos professionally',
-          prompt: promptMatch ? promptMatch[1] : 'enhance photo quality'
+          ...content,
+          technique: tipMatch ? tipMatch[1].trim() : 'prompt engineering',
+          prompt: promptMatch ? promptMatch[1].trim() : 'enhance portrait with soft lighting',
+          formula: formulaMatch ? formulaMatch[1].trim() : 'A [adjective] [subject] with [effect]'
         };
         break;
+      }
+      
+      case 'aiGenerationShowcases': {
+        // Extrahiere den kreativen Prompt
+        const promptMatch = cleanText.match(/"([^"]+)"/);
         
-      case 'aiGenerationShowcases':
-        // Extrahiere den Prompt aus dem Tweet
-        const generationPromptMatch = tweetText.match(/"(.+?)"/);
+        // Extrahiere die Art des generierten Bildes
+        const imageTypeMatch = cleanText.match(/(?:created|generated|made)\s+(?:a|an)?\s+([^,.!]+)/i) ||
+                               cleanText.match(/(?:stunning|beautiful|amazing)\s+([^,.!]+)(?:\s+with)/i);
         
         content = {
-          prompt: generationPromptMatch ? generationPromptMatch[1] : 'AI generated masterpiece'
+          ...content,
+          prompt: promptMatch ? promptMatch[1].trim() : 'Enchanted forest waterfall at sunset, magical lighting',
+          imageType: imageTypeMatch ? imageTypeMatch[1].trim() : 'AI artwork'
         };
         break;
-        
-      case 'aiEditingShowcases':
+      }
+      
+      case 'aiEditingShowcases': {
         // Extrahiere Before/After und Prompt
-        const beforeMatch = tweetText.match(/this\s(.+?)\sinto/i);
-        const afterMatch = tweetText.match(/into\s(.+?)\susing/i);
-        const editPromptMatch = tweetText.match(/"(.+?)"/);
+        const beforeMatch = cleanText.match(/(?:transformed|turned|changed)\s+(?:a|an)?\s+([^,.!]+)(?:\s+into)/i) ||
+                            cleanText.match(/before:?\s+([^,.!]+)/i);
+                            
+        const afterMatch = cleanText.match(/(?:into|to)\s+(?:a|an)?\s+([^,.!]+)/i) ||
+                           cleanText.match(/after:?\s+([^,.!]+)/i);
+                           
+        const promptMatch = cleanText.match(/"([^"]+)"/);
         
         content = {
-          before: beforeMatch ? beforeMatch[1] : 'ordinary photo',
-          after: afterMatch ? afterMatch[1] : 'extraordinary art',
-          prompt: editPromptMatch ? editPromptMatch[1] : 'transform image with magical effects'
+          ...content,
+          before: beforeMatch ? beforeMatch[1].trim() : 'ordinary portrait',
+          after: afterMatch ? afterMatch[1].trim() : 'fantasy character',
+          prompt: promptMatch ? promptMatch[1].trim() : 'transform to fantasy elf, magical glow'
         };
         break;
-        
-      case 'industryContent':
+      }
+      
+      case 'industryContent': {
         // Extrahiere Trend und Jahr
-        const trendMatch = tweetText.match(/(.+?)\sis taking over/i);
-        const yearMatch = tweetText.match(/in\s(\d{4})/);
+        const trendMatch = cleanText.match(/trend:?\s+([^,.!]+)/i) ||
+                           cleanText.match(/([^,.!]+)(?:\s+is\s+taking\s+over)/i) ||
+                           cleanText.match(/latest\s+(?:in|trend):?\s+([^,.!]+)/i);
+                           
+        const yearMatch = cleanText.match(/(?:in|for)\s+(\d{4})/);
         
+        // Extrahiere einen Fact oder News wenn vorhanden
+        const factMatch = cleanText.match(/fact:?\s+([^.!]+)/i) ||
+                          cleanText.match(/did\s+you\s+know\s+([^?!.]+)/i);
+                          
         content = {
-          trend: trendMatch ? trendMatch[1] : 'AI Photo Editing',
-          year: yearMatch ? yearMatch[1] : new Date().getFullYear().toString()
+          ...content,
+          trend: trendMatch ? trendMatch[1].trim() : 'Cinematic Hyper-Realism',
+          year: yearMatch ? yearMatch[1] : new Date().getFullYear().toString(),
+          fact: factMatch ? factMatch[1].trim() : null
         };
         break;
-        
-      case 'communityEngagement':
+      }
+      
+      case 'communityEngagement': {
         // Extrahiere Challenge
-        const challengeMatch = tweetText.match(/create\s(.+?)\susing/i);
+        const challengeMatch = cleanText.match(/challenge:?\s+([^,.!?]+)/i) ||
+                               cleanText.match(/create\s+(?:a|an)?\s+([^,.!?]+)/i) ||
+                               cleanText.match(/share\s+(?:your)?\s+([^,.!?]+)/i);
+                               
+        // Extrahiere Preis falls vorhanden
+        const prizeMatch = cleanText.match(/prize:?\s+([^,.!?]+)/i) ||
+                           cleanText.match(/win\s+(?:a|an)?\s+([^,.!?]+)/i);
         
         content = {
-          challenge: challengeMatch ? challengeMatch[1] : 'creative photo edits'
+          ...content,
+          challenge: challengeMatch ? challengeMatch[1].trim() : 'creative AI-edited photos',
+          prize: prizeMatch ? prizeMatch[1].trim() : 'premium subscription'
         };
         break;
-        
-      default:
-        content = {};
+      }
     }
     
+    console.log('Extrahierter Content für Bildgenerierung:', content);
     return content;
   }
 
