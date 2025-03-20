@@ -1,14 +1,14 @@
-import { LegacyUserRaw } from './profile';
-import { parseMediaGroups, reconstructTweetHtml } from './timeline-tweet-util';
+import { LegacyUserRaw } from './profile.js';
+import { parseMediaGroups, reconstructTweetHtml } from './timeline-tweet-util.js';
 import {
   LegacyTweetRaw,
   ParseTweetResult,
   QueryTweetsResponse,
   SearchResultRaw,
   TimelineResultRaw,
-} from './timeline-v1';
-import { Tweet } from './tweets';
-import { isFieldDefined } from './type-util';
+} from './timeline-v1.js';
+import { Tweet } from './tweets.js';
+import { isFieldDefined } from './type-util.js';
 
 export interface TimelineUserResultRaw {
   rest_id?: string;

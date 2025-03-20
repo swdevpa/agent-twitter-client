@@ -1,5 +1,5 @@
 import { ProxyAgent,setGlobalDispatcher } from 'undici';
-import { Scraper } from './scraper';
+import { Scraper } from './scraper.js';
 import fs from 'fs';
 
 export interface ScraperTestOptions {

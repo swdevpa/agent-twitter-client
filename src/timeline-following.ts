@@ -1,7 +1,7 @@
-import { requestApi } from './api';
-import { TwitterAuth } from './auth';
-import { ApiError } from './errors';
-import { TimelineInstruction } from './timeline-v2';
+import { requestApi } from './api.js';
+import { TwitterAuth } from './auth.js';
+import { ApiError } from './errors.js';
+import { TimelineInstruction } from './timeline-v2.js';
 
 export interface HomeLatestTimelineResponse {
   data?: {

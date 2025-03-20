@@ -1,9 +1,9 @@
 // src/utils.ts
 
 import { Headers } from 'headers-polyfill';
-import type { BroadcastCreated, TurnServersInfo } from './types';
-import { ChatClient } from './core/ChatClient';
-import { Logger } from './logger';
+import type { BroadcastCreated, TurnServersInfo } from './types.js';
+import { ChatClient } from './core/ChatClient.js';
+import { Logger } from './logger.js';
 import { EventEmitter } from 'events';
 
 /**

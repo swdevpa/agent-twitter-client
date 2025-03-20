@@ -1,7 +1,7 @@
-import { addApiFeatures, requestApi } from './api';
-import { TwitterAuth } from './auth';
-import { getUserIdByScreenName } from './profile';
-import { QueryTweetsResponse } from './timeline-v1';
+import { addApiFeatures, requestApi } from './api.js';
+import { TwitterAuth } from './auth.js';
+import { getUserIdByScreenName } from './profile.js';
+import { QueryTweetsResponse } from './timeline-v1.js';
 import {
   parseTimelineTweetsV2,
   TimelineV2,
@@ -11,11 +11,11 @@ import {
   parseThreadedConversation,
   parseArticle,
   TimelineArticle,
-} from './timeline-v2';
-import { getTweetTimeline } from './timeline-async';
-import { apiRequestFactory } from './api-data';
-import { ListTimeline, parseListTimelineTweets } from './timeline-list';
-import { updateCookieJar } from './requests';
+} from './timeline-v2.js';
+import { getTweetTimeline } from './timeline-async.js';
+import { apiRequestFactory } from './api-data.js';
+import { ListTimeline, parseListTimelineTweets } from './timeline-list.js';
+import { updateCookieJar } from './requests.js';
 import {
   ApiV2Includes,
   MediaObjectV2,

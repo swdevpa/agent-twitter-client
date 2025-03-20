@@ -1,16 +1,16 @@
 // src/core/SpaceParticipant.ts
 
 import { EventEmitter } from 'events';
-import { Logger } from '../logger';
-import { ChatClient } from './ChatClient';
-import { JanusClient } from './JanusClient';
-import { Scraper } from '../../scraper';
+import { Logger } from '../logger.js';
+import { ChatClient } from './ChatClient.js';
+import { JanusClient } from './JanusClient.js';
+import { Scraper } from '../../scraper.js';
 import type {
   TurnServersInfo,
   Plugin,
   PluginRegistration,
   AudioDataWithUser,
-} from '../types';
+} from '../types.js';
 import {
   accessChat,
   authorizeToken,
@@ -23,7 +23,7 @@ import {
   submitSpeakerRequest,
   unmuteSpeaker,
   cancelSpeakerRequest,
-} from '../utils';
+} from '../utils.js';
 
 interface SpaceParticipantConfig {
   spaceId: string;

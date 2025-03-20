@@ -1,8 +1,8 @@
 // src/core/Space.ts
 
 import { EventEmitter } from 'events';
-import { ChatClient } from './ChatClient';
-import { JanusClient } from './JanusClient';
+import { ChatClient } from './ChatClient.js';
+import { JanusClient } from './JanusClient.js';
 import {
   getTurnServers,
   createBroadcast,
@@ -12,16 +12,16 @@ import {
   muteSpeaker,
   unmuteSpeaker,
   setupCommonChatEvents,
-} from '../utils';
+} from '../utils.js';
 import type {
   BroadcastCreated,
   Plugin,
   AudioDataWithUser,
   PluginRegistration,
   SpeakerInfo,
-} from '../types';
-import { Scraper } from '../../scraper';
-import { Logger } from '../logger';
+} from '../types.js';
+import { Scraper } from '../../scraper.js';
+import { Logger } from '../logger.js';
 
 export interface SpaceConfig {
   mode: 'BROADCAST' | 'LISTEN' | 'INTERACTIVE';

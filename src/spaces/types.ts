@@ -1,7 +1,7 @@
 // src/types.ts
 
-import { Space } from './core/Space';
-import { SpaceParticipant } from './core/SpaceParticipant';
+import { Space } from './core/Space.js';
+import { SpaceParticipant } from './core/SpaceParticipant.js';
 
 /**
  * Basic PCM audio frame properties.

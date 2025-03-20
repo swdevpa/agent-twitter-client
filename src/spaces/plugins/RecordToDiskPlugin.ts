@@ -1,8 +1,8 @@
 import * as fs from 'fs';
-import { AudioDataWithUser, Plugin } from '../types';
-import { Space } from '../core/Space';
-import { SpaceParticipant } from '../core/SpaceParticipant';
-import { Logger } from '../logger';
+import { AudioDataWithUser, Plugin } from '../types.js';
+import { Space } from '../core/Space.js';
+import { SpaceParticipant } from '../core/SpaceParticipant.js';
+import { Logger } from '../logger.js';
 
 interface RecordToDiskPluginConfig {
   filePath?: string;

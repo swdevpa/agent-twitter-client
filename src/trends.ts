@@ -1,6 +1,6 @@
-import { addApiParams, requestApi } from './api';
-import { TwitterAuth } from './auth';
-import { TimelineV1 } from './timeline-v1';
+import { addApiParams, requestApi } from './api.js';
+import { TwitterAuth } from './auth.js';
+import { TimelineV1 } from './timeline-v1.js';
 
 export async function getTrends(auth: TwitterAuth): Promise<string[]> {
   const params = new URLSearchParams();

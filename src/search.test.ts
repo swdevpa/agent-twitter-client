@@ -1,6 +1,6 @@
-import { getScraper } from './test-utils';
-import { SearchMode } from './search';
-import { QueryTweetsResponse } from './timeline-v1';
+import { getScraper } from './test-utils.js';
+import { SearchMode } from './search.js';
+import { QueryTweetsResponse } from './timeline-v1.js';
 
 test('scraper can process search cursor', async () => {
   const scraper = await getScraper();

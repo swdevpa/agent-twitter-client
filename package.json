@@ -25,13 +25,22 @@
     "docs:generate": "typedoc --options typedoc.json",
     "docs:deploy": "npm run docs:generate && gh-pages -d docs",
     "format": "prettier --write src/**/*.ts",
-    "test": "jest"
+    "test": "jest",
+    "marketing": "node marketingCLI.js",
+    "marketing:post": "node marketingCLI.js post",
+    "marketing:trends": "node marketingCLI.js trends",
+    "marketing:analyze": "node marketingCLI.js analyze",
+    "marketing:generate-image": "node marketingCLI.js generate-image",
+    "marketing:schedule": "node scheduledMarketing.js",
+    "marketing:schedule:now": "node scheduledMarketing.js --post-now"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.0",
     "@roamhq/wrtc": "^0.8.0",
     "@sinclair/typebox": "^0.32.20",
     "headers-polyfill": "^3.1.2",
     "json-stable-stringify": "^1.0.2",
+    "node-schedule": "^2.1.1",
     "otpauth": "^9.2.2",
     "set-cookie-parser": "^2.6.0",
     "tough-cookie": "^4.1.2",

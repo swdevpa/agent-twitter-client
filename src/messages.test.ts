@@ -1,4 +1,4 @@
-import { getScraper } from './test-utils';
+import { getScraper } from './test-utils.js';
 import { jest } from '@jest/globals';
 
 let shouldSkipV2Tests = false;

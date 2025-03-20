@@ -3,9 +3,9 @@
 import { EventEmitter } from 'events';
 import wrtc from '@roamhq/wrtc';
 const { RTCPeerConnection, MediaStream } = wrtc;
-import { JanusAudioSink, JanusAudioSource } from './JanusAudio';
-import type { AudioDataWithUser, TurnServersInfo } from '../types';
-import { Logger } from '../logger';
+import { JanusAudioSink, JanusAudioSource } from './JanusAudio.js';
+import type { AudioDataWithUser, TurnServersInfo } from '../types.js';
+import { Logger } from '../logger.js';
 
 interface JanusConfig {
   /**

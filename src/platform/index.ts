@@ -1,6 +1,6 @@
-import { PlatformExtensions, genericPlatform } from './platform-interface';
+import { PlatformExtensions, genericPlatform } from './platform-interface.js';
 
-export * from './platform-interface';
+export * from './platform-interface.js';
 
 declare const PLATFORM_NODE: boolean;
 declare const PLATFORM_NODE_JEST: boolean;

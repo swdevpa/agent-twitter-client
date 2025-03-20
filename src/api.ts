@@ -1,7 +1,7 @@
-import { TwitterAuth } from './auth';
-import { ApiError } from './errors';
-import { Platform, PlatformExtensions } from './platform';
-import { updateCookieJar } from './requests';
+import { TwitterAuth } from './auth.js';
+import { ApiError } from './errors.js';
+import { Platform, PlatformExtensions } from './platform/index.js';
+import { updateCookieJar } from './requests.js';
 import { Headers } from 'headers-polyfill';
 
 // For some reason using Parameters<typeof fetch> reduces the request transform function to

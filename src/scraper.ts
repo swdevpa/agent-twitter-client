@@ -4,15 +4,15 @@ import {
   FetchTransformOptions,
   requestApi,
   RequestApiResult,
-} from './api';
-import { TwitterAuth, TwitterAuthOptions, TwitterGuestAuth } from './auth';
-import { TwitterUserAuth } from './auth-user';
+} from './api.js';
+import { TwitterAuth, TwitterAuthOptions, TwitterGuestAuth } from './auth.js';
+import { TwitterUserAuth } from './auth-user.js';
 import {
   getProfile,
   getUserIdByScreenName,
   getScreenNameByUserId,
   Profile,
-} from './profile';
+} from './profile.js';
 import {
   fetchQuotedTweetsPage,
   fetchSearchProfiles,
@@ -21,16 +21,16 @@ import {
   searchProfiles,
   searchQuotedTweets,
   searchTweets,
-} from './search';
+} from './search.js';
 import {
   fetchProfileFollowing,
   fetchProfileFollowers,
   getFollowing,
   getFollowers,
   followUser,
-} from './relationships';
-import { QueryProfilesResponse, QueryTweetsResponse } from './timeline-v1';
-import { getTrends } from './trends';
+} from './relationships.js';
+import { QueryProfilesResponse, QueryTweetsResponse } from './timeline-v1.js';
+import { getTrends } from './trends.js';
 import {
   Tweet,
   getTweetAnonymous,
@@ -58,14 +58,14 @@ import {
   getArticle,
   getAllRetweeters,
   Retweeter,
-} from './tweets';
+} from './tweets.js';
 import {
   parseTimelineTweetsV2,
   TimelineArticle,
   TimelineV2,
-} from './timeline-v2';
-import { fetchHomeTimeline } from './timeline-home';
-import { fetchFollowingTimeline } from './timeline-following';
+} from './timeline-v2.js';
+import { fetchHomeTimeline } from './timeline-home.js';
+import { fetchFollowingTimeline } from './timeline-following.js';
 import {
   TTweetv2Expansion,
   TTweetv2MediaField,
@@ -79,7 +79,7 @@ import {
   getDirectMessageConversations,
   sendDirectMessage,
   SendDirectMessageResponse,
-} from './messages';
+} from './messages.js';
 import {
   fetchAudioSpaceById,
   fetchAuthenticatePeriscope,
@@ -87,20 +87,20 @@ import {
   fetchCommunitySelectQuery,
   fetchLiveVideoStreamStatus,
   fetchLoginTwitterToken,
-} from './spaces';
+} from './spaces.js';
 import {
   AudioSpace,
   Community,
   LiveVideoStreamStatus,
   LoginTwitterTokenResponse,
   Subtopic,
-} from './types/spaces';
+} from './types/spaces.js';
 import {
   createGrokConversation,
   grokChat,
   GrokChatOptions,
   GrokChatResponse,
-} from './grok';
+} from './grok.js';
 
 const twUrl = 'https://twitter.com';
 const UserTweetsUrl =

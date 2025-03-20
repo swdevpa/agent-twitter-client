@@ -1,13 +1,13 @@
-import { TwitterAuthOptions, TwitterGuestAuth } from './auth';
-import { requestApi } from './api';
+import { TwitterAuthOptions, TwitterGuestAuth } from './auth.js';
+import { requestApi } from './api.js';
 import { CookieJar } from 'tough-cookie';
-import { updateCookieJar } from './requests';
+import { updateCookieJar } from './requests.js';
 import { Headers } from 'headers-polyfill';
-import { TwitterApiErrorRaw } from './errors';
+import { TwitterApiErrorRaw } from './errors.js';
 import { Type, type Static } from '@sinclair/typebox';
 import { Check } from '@sinclair/typebox/value';
 import * as OTPAuth from 'otpauth';
-import { LegacyUserRaw, parseProfile, type Profile } from './profile';
+import { LegacyUserRaw, parseProfile, type Profile } from './profile.js';
 
 interface TwitterUserAuthFlowInitRequest {
   flow_name: string;

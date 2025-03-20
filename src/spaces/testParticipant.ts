@@ -1,9 +1,9 @@
 // src/testParticipant.ts
 
 import 'dotenv/config';
-import { Scraper } from '../scraper';
-import { SpaceParticipant } from './core/SpaceParticipant';
-import { SttTtsPlugin } from './plugins/SttTtsPlugin';
+import { Scraper } from '../scraper.js';
+import { SpaceParticipant } from './core/SpaceParticipant.js';
+import { SttTtsPlugin } from './plugins/SttTtsPlugin.js';
 
 /**
  * Main test entry point for the "participant" flow:

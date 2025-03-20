@@ -1,5 +1,5 @@
-import { TwitterAuth } from './auth';
-import { updateCookieJar } from './requests';
+import { TwitterAuth } from './auth.js';
+import { updateCookieJar } from './requests.js';
 
 export interface DirectMessage {
   id: string;

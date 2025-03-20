@@ -1,7 +1,7 @@
-import { Profile, parseProfile } from './profile';
-import { QueryProfilesResponse, QueryTweetsResponse } from './timeline-v1';
-import { SearchEntryRaw, parseLegacyTweet } from './timeline-v2';
-import { Tweet } from './tweets';
+import { Profile, parseProfile } from './profile.js';
+import { QueryProfilesResponse, QueryTweetsResponse } from './timeline-v1.js';
+import { SearchEntryRaw, parseLegacyTweet } from './timeline-v2.js';
+import { Tweet } from './tweets.js';
 
 export interface SearchTimeline {
   data?: {

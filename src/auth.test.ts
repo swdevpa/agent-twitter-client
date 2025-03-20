@@ -1,4 +1,4 @@
-import { getScraper } from './test-utils';
+import { getScraper } from './test-utils.js';
 
 const testLogin = process.env['TWITTER_PASSWORD'] ? test : test.skip;
 

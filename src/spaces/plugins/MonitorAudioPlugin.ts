@@ -1,6 +1,6 @@
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
-import { Plugin, AudioDataWithUser } from '../types';
-import { Logger } from '../logger';
+import { Plugin, AudioDataWithUser } from '../types.js';
+import { Logger } from '../logger.js';
 
 /**
  * MonitorAudioPlugin

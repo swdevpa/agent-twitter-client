@@ -1,5 +1,5 @@
-import { Scraper } from './scraper';
-import { getScraper } from './test-utils';
+import { Scraper } from './scraper.js';
+import { getScraper } from './test-utils.js';
 
 test('scraper can fetch home timeline', async () => {
   const scraper = await getScraper();

@@ -1,6 +1,6 @@
-import { LegacyTweetRaw, TimelineMediaExtendedRaw } from './timeline-v1';
-import { Photo, Video } from './tweets';
-import { isFieldDefined, NonNullableField } from './type-util';
+import { LegacyTweetRaw, TimelineMediaExtendedRaw } from './timeline-v1.js';
+import { Photo, Video } from './tweets.js';
+import { isFieldDefined, NonNullableField } from './type-util.js';
 
 const reHashtag = /\B(\#\S+\b)/g;
 const reCashtag = /\B(\$\S+\b)/g;

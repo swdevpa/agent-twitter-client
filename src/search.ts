@@ -1,14 +1,14 @@
-import { addApiFeatures, requestApi } from './api';
-import { TwitterAuth } from './auth';
-import { Profile } from './profile';
-import { QueryProfilesResponse, QueryTweetsResponse } from './timeline-v1';
-import { getTweetTimeline, getUserTimeline } from './timeline-async';
-import { Tweet } from './tweets';
+import { addApiFeatures, requestApi } from './api.js';
+import { TwitterAuth } from './auth.js';
+import { Profile } from './profile.js';
+import { QueryProfilesResponse, QueryTweetsResponse } from './timeline-v1.js';
+import { getTweetTimeline, getUserTimeline } from './timeline-async.js';
+import { Tweet } from './tweets.js';
 import {
   SearchTimeline,
   parseSearchTimelineTweets,
   parseSearchTimelineUsers,
-} from './timeline-search';
+} from './timeline-search.js';
 import stringify from 'json-stable-stringify';
 
 /**

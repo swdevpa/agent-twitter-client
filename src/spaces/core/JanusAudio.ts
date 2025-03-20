@@ -4,7 +4,7 @@ import { EventEmitter } from 'events';
 import wrtc from '@roamhq/wrtc';
 const { nonstandard } = wrtc;
 const { RTCAudioSource, RTCAudioSink } = nonstandard;
-import { Logger } from '../logger';
+import { Logger } from '../logger.js';
 
 /**
  * Configuration options for the JanusAudioSource.

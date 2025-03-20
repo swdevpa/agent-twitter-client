@@ -1,5 +1,5 @@
-import { PlatformExtensions } from '../platform-interface';
-import { randomizeCiphers } from './randomize-ciphers';
+import { PlatformExtensions } from '../platform-interface.js';
+import { randomizeCiphers } from './randomize-ciphers.js';
 
 class NodePlatform implements PlatformExtensions {
   randomizeCiphers(): Promise<void> {

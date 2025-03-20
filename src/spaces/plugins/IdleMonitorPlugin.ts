@@ -1,6 +1,6 @@
-import { Plugin, AudioDataWithUser } from '../types';
-import { Space } from '../core/Space';
-import { Logger } from '../logger';
+import { Plugin, AudioDataWithUser } from '../types.js';
+import { Space } from '../core/Space.js';
+import { Logger } from '../logger.js';
 
 /**
  * IdleMonitorPlugin

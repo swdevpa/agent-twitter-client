@@ -1,12 +1,12 @@
 // src/test.ts
 
 import 'dotenv/config';
-import { Space, SpaceConfig } from './core/Space';
-import { Scraper } from '../scraper';
-import { RecordToDiskPlugin } from './plugins/RecordToDiskPlugin';
-import { SttTtsPlugin } from './plugins/SttTtsPlugin';
-import { IdleMonitorPlugin } from './plugins/IdleMonitorPlugin';
-import { HlsRecordPlugin } from './plugins/HlsRecordPlugin';
+import { Space, SpaceConfig } from './core/Space.js';
+import { Scraper } from '../scraper.js';
+import { RecordToDiskPlugin } from './plugins/RecordToDiskPlugin.js';
+import { SttTtsPlugin } from './plugins/SttTtsPlugin.js';
+import { IdleMonitorPlugin } from './plugins/IdleMonitorPlugin.js';
+import { HlsRecordPlugin } from './plugins/HlsRecordPlugin.js';
 
 /**
  * Main test entry point
@@ -67,9 +67,10 @@ async function main() {
   // 3) Initialize the Space
   const config: SpaceConfig = {
     mode: 'INTERACTIVE',
-    title: 'AI Chat - Dynamic GPT Config',
-    description: 'Space that demonstrates dynamic GPT personalities.',
+    title: 'Test Space',
+    description: 'A test space',
     languages: ['en'],
+    record: false
   };
 
   const broadcastInfo = await space.initialize(config);

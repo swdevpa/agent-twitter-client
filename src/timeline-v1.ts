@@ -1,7 +1,7 @@
-import { LegacyUserRaw, parseProfile, Profile } from './profile';
-import { parseMediaGroups, reconstructTweetHtml } from './timeline-tweet-util';
-import { PlaceRaw, Tweet } from './tweets';
-import { isFieldDefined } from './type-util';
+import { LegacyUserRaw, parseProfile, Profile } from './profile.js';
+import { parseMediaGroups, reconstructTweetHtml } from './timeline-tweet-util.js';
+import { PlaceRaw, Tweet } from './tweets.js';
+import { isFieldDefined } from './type-util.js';
 
 export interface Hashtag {
   text?: string;

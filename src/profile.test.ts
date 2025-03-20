@@ -1,5 +1,5 @@
-import { Profile } from './profile';
-import { getScraper } from './test-utils';
+import { Profile } from './profile.js';
+import { getScraper } from './test-utils.js';
 
 test('scraper can get screen name by user id', async () => {
   const scraper = await getScraper();

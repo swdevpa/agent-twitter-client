@@ -2,8 +2,8 @@
 
 import WebSocket from 'ws';
 import { EventEmitter } from 'events';
-import type { SpeakerRequest, OccupancyUpdate } from '../types';
-import { Logger } from '../logger';
+import type { SpeakerRequest, OccupancyUpdate } from '../types.js';
+import { Logger } from '../logger.js';
 
 /**
  * Configuration object for ChatClient.

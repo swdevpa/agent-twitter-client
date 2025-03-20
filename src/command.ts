@@ -14,8 +14,8 @@ globalThis.PLATFORM_NODE = typeof process !== 'undefined' && (
 globalThis.PLATFORM_NODE_JEST = false;
 
 // Your existing imports
-import { Scraper } from './scraper';
-import { Photo, Tweet } from './tweets';
+import { Scraper } from './scraper.js';
+import { Photo, Tweet } from './tweets.js';
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';

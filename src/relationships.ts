@@ -1,13 +1,13 @@
-import { addApiFeatures, requestApi, bearerToken } from './api';
+import { addApiFeatures, requestApi, bearerToken } from './api.js';
 import { Headers } from 'headers-polyfill';
-import { TwitterAuth } from './auth';
-import { Profile, getUserIdByScreenName } from './profile';
-import { QueryProfilesResponse } from './timeline-v1';
-import { getUserTimeline } from './timeline-async';
+import { TwitterAuth } from './auth.js';
+import { Profile, getUserIdByScreenName } from './profile.js';
+import { QueryProfilesResponse } from './timeline-v1.js';
+import { getUserTimeline } from './timeline-async.js';
 import {
   RelationshipTimeline,
   parseRelationshipTimeline,
-} from './timeline-relationship';
+} from './timeline-relationship.js';
 import stringify from 'json-stable-stringify';
 
 export function getFollowing(

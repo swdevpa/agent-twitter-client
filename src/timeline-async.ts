@@ -1,5 +1,5 @@
-import { Profile } from './profile';
-import { Tweet } from './tweets';
+import { Profile } from './profile.js';
+import { Tweet } from './tweets.js';
 
 export interface FetchProfilesResponse {
   profiles: Profile[];
