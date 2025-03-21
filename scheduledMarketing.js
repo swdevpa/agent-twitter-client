@@ -19,11 +19,11 @@ const DEFAULT_CONFIG = {
   // Anzahl der Tweets pro Tag (1-2 laut Strategie)
   tweetsPerDay: 2,
   
-  // Optimale Posting-Zeiten (Lokale Zeit)
+  // Optimale Posting-Zeiten für USA-Zielgruppe (von Berlin aus)
   // Format: [Stunde, Minute]
   scheduledTimes: [
-    [8, 30],  // 8:30 AM
-    [17, 30]  // 5:30 PM
+    [16, 30],  // 16:30 Berlin = 10:30 ET / 7:30 PT (Vormittag USA)
+    [20, 0]    // 20:00 Berlin = 14:00 ET / 11:00 PT (Mittag USA)
   ],
   
   // Letzte Ausführung
